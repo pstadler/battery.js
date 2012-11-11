@@ -34,6 +34,9 @@
 				$customPlugged = $('#custom-plugged'),
 				updateTimer = null;
 
+			$('#auto-update-fieldset').toggle(Battery.isSupported());
+			$('#not-supported').toggle(!Battery.isSupported());
+
 			$autoUpdate
 				.prop('checked', Battery.isSupported())
 				.change(function() {
@@ -109,7 +112,7 @@
 
 		html, body {
 			font-family: 'Helvetica Neue', Helvetica, sans-serif;
-			color: white;
+			color: #eee;
 			font-size: 18px;
 			height: 100%;
 			width: 100%;
@@ -119,15 +122,32 @@
 			background: #111;
 		}
 
+		a {
+			text-decoration: none;
+			color: #eee;
+		}
+
 		#header {
 			position: absolute;
 			top: 20px;
 			left: 20px;
+			z-index: 99;
 		}
 
 		#header span {
 			color: #777;
 			font-size: 16px;
+		}
+
+		#not-supported {
+			background-color: #e53d3d;
+			display: none;
+			padding: 3px 7px;
+			color: black;
+			font-weight: bold;
+			font-size: 14px;
+			display: inline-block;
+			border-radius: 0 0 6px 6px;
 		}
 
 		#stage {
@@ -213,12 +233,8 @@
 		}
 
 		label {
-			cursor: pointer;
-		}
-
-		label:after {
-			content: '';
 			display: block;
+			cursor: pointer;
 		}
 
 		input {
@@ -243,10 +259,11 @@
 <body>
 	<div id="header">
 		<h1>HTML5 Battery</h1>
-		<span>&mdash; an experiment with the Battery Status API.</span>
+		<span>&mdash; an experiment with the Battery Status API using <a href="https://github.com/pstadler/battery.js">battery.js</a>.</span>
 	</div>
 
 	<div id="stage">
+		<div id="not-supported">Battery Status API is not supported by your browser.</div>
 		<div id="battery">
 			<div id="battery-level"></div>
 			<div id="battery-knob"></div>
@@ -255,18 +272,26 @@
 
 	<div id="controls">
 		<form>
-			<fieldset>
-				<input type="checkbox" name="auto-update" id="auto-update" autocomplete="off" />
-				<label for="auto-update">Automatically Update Status</label>
+			<fieldset id="auto-update-fieldset">
+				<label for="auto-update">
+					<input type="checkbox" name="auto-update" id="auto-update" autocomplete="off" />
+					Automatically Update Status
+				</label>
 			</fieldset>
 			<fieldset>
 				<legend>Manual Controls:</legend>
-				<input type="text" name="custom-level" id="custom-level" autocomplete="off" value="100" />
-				<label for="custom-level">% Battery Level</label>
-				<input type="checkbox" name="custom-charging" id="custom-charging" autocomplete="off" />
-				<label for="custom-charging">Battery is Charging</label>
-				<input type="checkbox" name="custom-plugged" id="custom-plugged" autocomplete="off" />
-				<label for="custom-plugged">Battery is Plugged-in</label>
+				<label for="custom-level">
+					<input type="text" name="custom-level" id="custom-level" autocomplete="off" value="100" />
+					% Battery Level
+				</label>
+				<label for="custom-charging">
+					<input type="checkbox" name="custom-charging" id="custom-charging" autocomplete="off" />
+					Battery is Charging
+				</label>
+				<label for="custom-plugged">
+					<input type="checkbox" name="custom-plugged" id="custom-plugged" autocomplete="off" />
+					Battery is Plugged-in
+				</label>
 			</fieldset>
 		</form>
 	</div>
