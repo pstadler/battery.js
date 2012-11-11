@@ -6,33 +6,8 @@
 	<title>HTML5 Battery</title>
 	<link rel="shortcut icon" type="image/x-icon" href="public/favicon.ico" id="favicon" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script type="text/javascript" src="public/battery.js"></script>
 	<script type="text/javascript">
-		var Battery = (function(self) {
-			var _events = 'chargingchange chargingtimechange dischargingtimechange levelchange',
-				_battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
-
-			self.isSupported = function() {
-				return !!_battery;
-			};
-
-			self.getStatus = function() {
-				return _battery;
-			};
-
-			self.onUpdate = function() {};
-
-			if(self.isSupported()) {
-				var handler = function() {
-					self.onUpdate(self.getStatus());
-				};
-				for(e in _events.split(' ')) {
-					_battery.addEventListener(e, handler);
-				}
-			}
-
-			return self;
-		})(Battery || {});
-
 		$(document).ready(function() {
 			var $level = $('#battery-level'),
 				status = Battery.getStatus() || {'level': Math.floor(Math.random()*100)/100},
@@ -218,7 +193,7 @@
 			position: absolute;
 			bottom: 20px;
 			right: 20px;
-			color: #999;
+			color: #777;
 			font-size: 14px;
 		}
 
@@ -228,7 +203,7 @@
 			margin-top: 30px;
 			padding: 7px 7px 0 7px;
 			border-top: 1px solid black;
-			background-color: #444;
+			background-color: #333;
 			border-radius: 6px;
 		}
 
@@ -296,6 +271,6 @@
 		</form>
 	</div>
 
-	<a href="https://github.com/pstadler/the-cube"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<a href="https://github.com/pstadler/html5-battery"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 </body>
 </html>
