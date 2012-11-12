@@ -76,7 +76,7 @@
 				});
 
 			$customCharging
-				.prop('checked', status.charging)
+				.prop('checked', status.charging && status.chargingTime > 0)
 				.change(function() {
 					var isChecked = $customCharging.is(':checked');
 					if(isChecked) {
