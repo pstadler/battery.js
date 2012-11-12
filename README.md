@@ -24,4 +24,7 @@ if(Battery.isSupported()) {
 
 [koeniglich.ch/battery.js](http://koeniglich.ch/battery.js)
 
-*As of November 2012 the Battery Status API is only supported by [Firefox Aurora](http://www.mozilla.org/en-US/firefox/aurora/).*
+As of November 2012 the Battery Status API is supported by
+
+- **Firefox 11+** on Windows/Linux
+- **Firefox Aurora** on MacOSX.
