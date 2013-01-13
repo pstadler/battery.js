@@ -24,7 +24,7 @@ if(Battery.isSupported()) {
 
 [koeniglich.ch/battery.js](http://koeniglich.ch/battery.js)
 
-As of November 2012 the Battery Status API is supported by
+As of January 2013 the Battery Status API is supported by
 
 - **Firefox 11+** on Windows/Linux
-- **Firefox Aurora** on MacOSX.
+- **Firefox 18+** on MacOSX.
