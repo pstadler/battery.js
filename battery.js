@@ -53,12 +53,10 @@ var Battery = (function() {
 
   if(_battery instanceof Function) {
     _battery.call(navigator)
-      .then(function(batteryManager) {
-        if(!_status) {
-          _statusCallback(batteryManager);
-        }
-        _status = batteryManager;
-        registerEventHandler(batteryManager);
+      .then(function(status) {
+        _status = status;
+        _statusCallback(_status);
+        registerEventHandler(_status);
       }, function() {
         _status = 'not supported';
       });
