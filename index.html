@@ -3,105 +3,28 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="description" content="An experiment with the Battery Status API." />
-	<title>HTML5 Battery</title>
+	<title>Battery Status API</title>
 	<link rel="shortcut icon" type="image/x-icon" href="public/favicon.ico" id="favicon" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://raw.github.com/pstadler/battery.js/master/battery.min.js"></script>
+	<script type="text/javascript" src="https://rawgithub.com/pstadler/battery.js/master/battery.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var $level = $('#battery-level'),
-				status = Battery.getStatus() || {'level': Math.floor(Math.random()*100)/100},
-				updateBattery = function(status) {
-					var level = Math.floor(status.level * 100);
-					$level.toggleClass('charging', !!status.charging);
-					$level.toggleClass('plugged', status.dischargingTime === Infinity);
-					$level.css({'width': level + '%'});
-					$level.toggleClass('low', level <= 20);
-				};
+			var $level = $('#battery-level');
 
-			// Battery API
-			if(!Battery.isSupported()) {
-				console.warn('Battery API is not supported.');
-			} else {
-				Battery.onUpdate = updateBattery;
-			}
-			updateBattery(status);
+			var updateStatus = function(status, error) {
+				if(error) {
+					$('#not-supported').show();
+					return;
+				}
+				var level = Math.floor(status.level * 100);
+				$level.toggleClass('charging', !!status.charging);
+				$level.toggleClass('plugged', status.dischargingTime === Infinity);
+				$level.css({'width': level + '%'});
+				$level.toggleClass('low', level <= 20);
+			};
 
-			// Controls
-			var $autoUpdate = $('#auto-update'),
-				$customLevel = $('#custom-level'),
-				$customCharging = $('#custom-charging'),
-				$customPlugged = $('#custom-plugged'),
-				updateTimer = null;
-
-			$('#auto-update-fieldset').toggle(Battery.isSupported());
-			$('#not-supported').toggle(!Battery.isSupported());
-
-			$autoUpdate
-				.prop('checked', Battery.isSupported())
-				.change(function() {
-					if($autoUpdate.prop('checked')) {
-						updateBattery(Battery.getStatus());
-						Battery.onUpdate = updateBattery;
-					} else {
-						Battery.onUpdate = function() {};
-					}
-				});
-
-			$customLevel
-				.val(status.level*100)
-				.on('input keydown change', function(e) {
-					var	value = parseInt($customLevel.val(), 10) || 0;
-					if(e.keyCode === 38) {
-						++value;
-					} else if(e.keyCode === 40) {
-						--value;
-					}
-					if(value > 100) {
-						value = 100;
-					} else if(value < 0) {
-						value = 0;
-					}
-					$customLevel.val(value);
-					window.clearTimeout(updateTimer);
-					updateTimer = window.setTimeout(function() {
-						$autoUpdate.prop('checked', false);
-						$customCharging.prop('checked', false);
-						updateBattery({
-							'charging': false, 'level': value / 100
-						});
-						$customCharging.prop('checked', false);
-						$customPlugged.prop('checked', false);
-					}, 600);
-				});
-
-			$customCharging
-				.prop('checked', status.charging && status.chargingTime > 0)
-				.change(function() {
-					var isChecked = $customCharging.is(':checked');
-					if(isChecked) {
-						$customPlugged.prop('checked', false);
-					}
-					$autoUpdate.prop('checked', false);
-					updateBattery({
-						'charging': isChecked,
-						'level': parseInt($level[0].style.width.replace('%', ''), 10) / 100
-					});
-				});
-
-			$customPlugged
-				.prop('checked', status.dischargingTime === Infinity)
-				.change(function() {
-					var isChecked = $customPlugged.is(':checked');
-					if(isChecked) {
-						$customCharging.prop('checked', false);
-					}
-					$autoUpdate.prop('checked', false);
-					updateBattery({
-						'dischargingTime': isChecked ? Infinity : null,
-						'level': parseInt($level[0].style.width.replace('%', ''), 10) / 100
-					});
-				});
+			Battery.getStatus(updateStatus);
+			Battery.onUpdate(updateStatus);
 		});
 	</script>
 	<style type="text/css">
@@ -146,7 +69,6 @@
 			color: black;
 			font-weight: bold;
 			font-size: 14px;
-			display: inline-block;
 			border-radius: 0 0 6px 6px;
 		}
 
@@ -162,7 +84,7 @@
 			position: relative;
 			top: 50%;
 			left: 50%;
-			margin: -100px -161px;
+			margin: -50px -161px;
 			width: 300px;
 			padding: 5px;
 			border: 6px solid white;
@@ -208,57 +130,11 @@
 			border: 6px solid white;
 			border-radius: 7px;
 		}
-
-		#controls {
-			position: absolute;
-			bottom: 20px;
-			right: 20px;
-			color: #777;
-			font-size: 14px;
-		}
-
-		fieldset {
-			position: relative;
-			border: 0 none;
-			margin-top: 30px;
-			padding: 7px 7px 0 7px;
-			border-top: 1px solid black;
-			background-color: #333;
-			border-radius: 6px;
-		}
-
-		legend {
-			position: absolute;
-			top: -25px;
-		}
-
-		label {
-			display: block;
-			cursor: pointer;
-		}
-
-		input {
-			color: #eee;
-			margin-bottom: 7px;
-		}
-
-		input[type=text] {
-			width: 30px;
-			border: 0 none;
-			font-size: 14px;
-			text-align: right;
-			background-color: transparent;
-		}
-
-		input[type=checkbox] {
-			margin-right: 5px;
-			cursor: pointer;
-		}
 	</style>
 </head>
 <body>
 	<div id="header">
-		<h1>HTML5 Battery</h1>
+		<h1>Battery Status API</h1>
 		<span>&mdash; an experiment with the Battery Status API using <a href="https://github.com/pstadler/battery.js">battery.js</a>.</span>
 	</div>
 
@@ -268,32 +144,6 @@
 			<div id="battery-level"></div>
 			<div id="battery-knob"></div>
 		</div>
-	</div>
-
-	<div id="controls">
-		<form>
-			<fieldset id="auto-update-fieldset">
-				<label for="auto-update">
-					<input type="checkbox" name="auto-update" id="auto-update" autocomplete="off" />
-					Automatically Update Status
-				</label>
-			</fieldset>
-			<fieldset>
-				<legend>Manual Controls:</legend>
-				<label for="custom-level">
-					<input type="text" name="custom-level" id="custom-level" autocomplete="off" value="100" />
-					% Battery Level
-				</label>
-				<label for="custom-charging">
-					<input type="checkbox" name="custom-charging" id="custom-charging" autocomplete="off" />
-					Battery is Charging
-				</label>
-				<label for="custom-plugged">
-					<input type="checkbox" name="custom-plugged" id="custom-plugged" autocomplete="off" />
-					Battery is Plugged-in
-				</label>
-			</fieldset>
-		</form>
 	</div>
 
 	<a href="https://github.com/pstadler/battery.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
