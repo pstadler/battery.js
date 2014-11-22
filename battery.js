@@ -5,52 +5,69 @@
  * - Patrick Stadler <patrick.stadler@gmail.com>
  *
  * Copyright:
- * (c) 2012 Patrick Stadler. All rights reserved.
+ * (c) 2014 Patrick Stadler. All rights reserved.
  */
-var Battery = (function(self) {
-	var _events = 'chargingchange chargingtimechange dischargingtimechange levelchange',
-		_battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+var Battery = (function() {
+  var _events = 'chargingchange chargingtimechange dischargingtimechange levelchange'
+    , _battery = navigator.battery || navigator.mozBattery || navigator.getBattery
+    , _status = null
+    , _statusCallback = function() {}
+    , _updateCallback = function() {};
 
-	/** Function: isSupported
-	 * Check if Battery Status API is supported.
-	 *
-	 * Returns:
-	 * (Boolean) - true if is supported
-	 */
-	self.isSupported = function() {
-		return !!_battery;
-	};
+  /** Function: getStatus
+   * Register callback function to retrieve status
+   *
+   * Parameters:
+   * (Function) fn(status, error) - callback function
+   */
+  self.getStatus = function(fn) {
+    if(_status === 'not supported') {
+      fn(null, _status);
+    } else if(_status) {
+      fn(_status);
+    } else {
+      _statusCallback = fn;
+    }
+  };
 
-	/** Function: getStatus
-	 * Get the current battery status.
-	 *
-	 * See:
-	 * http://www.w3.org/TR/battery-status/#attributes-1
-	 *
-	 * Returns:
-	 * (Object) _battery - {charging, chargingTime, dischargingTime, level}
-	 */
-	self.getStatus = function() {
-		return _battery;
-	};
+  /* Function: onUpdate
+   * Register callback function when battery status changes
+   *
+   * Parameters:
+   * (Function) fn(status) - callback function
+   */
+  self.onUpdate = function(fn) {
+    _updateCallback = fn;
+  };
 
-	/** Function: onUpdate
-	 * Callback function when battery status is updated.
-	 * Overwrite this method with your handler.
-	 *
-	 * Parameters:
-	 * (Object) status - {charging, chargingTime, dischargingTime, level}
-	 */
-	self.onUpdate = function(status) {};
+  function eventHandler(status) {
+    _status = status;
+    _updateCallback(_status);
+  }
 
-	if(self.isSupported()) {
-		var handler = function() {
-			self.onUpdate(self.getStatus());
-		};
-		for(e in _events.split(' ')) {
-			_battery.addEventListener(e, handler);
-		}
-	}
+  function registerEventHandler(battery) {
+    for(var evt in _events.split(' ')) {
+      battery.addEventListener(evt, eventHandler);
+    }
+  }
 
-	return self;
+  if(_battery instanceof Function) {
+    _battery.call(navigator)
+      .then(function(batteryManager) {
+        if(!_status) {
+          _statusCallback(batteryManager);
+        }
+        _status = batteryManager;
+        registerEventHandler(batteryManager);
+      }, function() {
+        _status = 'not supported';
+      });
+  } else if(_battery) {
+    _status = _battery;
+    registerEventHandler(_battery);
+  } else {
+    _status = 'not supported';
+  }
+
+  return self;
 })(Battery || {});
