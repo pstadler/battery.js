@@ -46,9 +46,9 @@ var Battery = (function() {
   }
 
   function registerEventHandler(battery) {
-    for(var evt in _events.split(' ')) {
+    _events.split(' ').forEach(function(evt) {
       battery.addEventListener(evt, eventHandler);
-    }
+    });
   }
 
   if(_battery instanceof Function) {

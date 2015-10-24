@@ -2,7 +2,7 @@
 
 A tiny JavaScript wrapper for the [HTML5 Battery Status API](http://www.w3.org/TR/battery-status/).
 
-As of November 2014 the Battery Status API is supported by Firefox and Chrome: http://caniuse.com/battery-status
+As of October 2015 the Battery Status API is supported by Firefox, Chrome, Opera, Android Browser and Chrome for Android: http://caniuse.com/battery-status
 
 ## Usage
 
