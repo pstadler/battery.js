@@ -1,0 +1,29 @@
+{
+  "name": "battery.js",
+  "version": "1.0.0",
+  "description": "A tiny wrapper for the HTML5 Battery Status API",
+  "main": "battery.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/uglifyjs --compress --mangle -- battery.js > battery.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pstadler/battery.js.git"
+  },
+  "keywords": [
+    "battery",
+    "status",
+    "html5",
+    "browser"
+  ],
+  "author": "Patrick Stadler <patrick.stadler@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pstadler/battery.js/issues"
+  },
+  "homepage": "https://github.com/pstadler/battery.js#readme",
+  "devDependencies": {
+    "uglify-js": "^2.5.0"
+  }
+}

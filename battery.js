@@ -12,7 +12,8 @@ var Battery = (function() {
     , _battery = navigator.battery || navigator.mozBattery || navigator.getBattery
     , _status = null
     , _statusCallback = function() {}
-    , _updateCallback = function() {};
+    , _updateCallback = function() {}
+    , STATUS_UNSUPPORTED = 'not supported';
 
   /** Function: getStatus
    * Register callback function to retrieve status
@@ -21,7 +22,7 @@ var Battery = (function() {
    * (Function) fn(status, error) - callback function
    */
   self.getStatus = function(fn) {
-    if(_status === 'not supported') {
+    if(_status === STATUS_UNSUPPORTED) {
       fn(null, _status);
     } else if(_status) {
       fn(_status);
@@ -58,13 +59,13 @@ var Battery = (function() {
         _statusCallback(_status);
         registerEventHandler(_status);
       }, function() {
-        _status = 'not supported';
+        _status = STATUS_UNSUPPORTED;
       });
   } else if(_battery) {
     _status = _battery;
     registerEventHandler(_battery);
   } else {
-    _status = 'not supported';
+    _status = STATUS_UNSUPPORTED;
   }
 
   return self;
