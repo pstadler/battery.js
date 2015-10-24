@@ -1,6 +1,6 @@
 {
   "name": "battery.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tiny wrapper for the HTML5 Battery Status API",
   "main": "battery.js",
   "scripts": {
