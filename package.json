@@ -1,11 +1,11 @@
 {
   "name": "battery.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A tiny wrapper for the HTML5 Battery Status API",
   "main": "battery.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/uglifyjs --compress --mangle -- battery.js > battery.min.js"
+    "test": "./node_modules/.bin/eslint battery.js",
+    "build": "npm run test && ./node_modules/.bin/uglifyjs --compress --mangle -- battery.js > battery.min.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/pstadler/battery.js#readme",
   "devDependencies": {
+    "eslint": "^1.7.3",
     "uglify-js": "^2.5.0"
   }
 }

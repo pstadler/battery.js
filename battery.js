@@ -7,7 +7,7 @@
  * Copyright:
  * (c) 2014 Patrick Stadler. All rights reserved.
  */
-var Battery = (function() {
+var Battery = (function(self) {
   var _events = 'chargingchange chargingtimechange dischargingtimechange levelchange'
     , _battery = navigator.battery || navigator.mozBattery || navigator.getBattery
     , _status = null
