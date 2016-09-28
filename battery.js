@@ -9,7 +9,7 @@
  */
 var Battery = (function(self) {
   var _events = 'chargingchange chargingtimechange dischargingtimechange levelchange'
-    , _battery = navigator.battery || navigator.mozBattery || navigator.getBattery
+    , _battery = navigator.getBattery || navigator.battery || navigator.mozBattery
     , _status = null
     , _statusCallback = function() {}
     , _updateCallback = function() {}
