@@ -3,7 +3,9 @@
 
 A tiny JavaScript wrapper for the [HTML5 Battery Status API](http://www.w3.org/TR/battery-status/).
 
-As of October 2015 the Battery Status API is supported by Firefox, Chrome, Opera, Android Browser and Chrome for Android: http://caniuse.com/battery-status
+~~As of October 2015 the Battery Status API is supported by Firefox, Chrome, Opera, Android Browser and Chrome for Android: http://caniuse.com/battery-status~~
+
+Due to privacy concerns, support for the Battery Status API has been dropped from most browsers. See: https://caniuse.com/#feat=battery-status.
 
 ## Install
 
