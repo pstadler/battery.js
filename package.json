@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/pstadler/battery.js#readme",
   "devDependencies": {
-    "eslint": "^1.7.3",
+    "eslint": "^6.6.0",
     "uglify-js": "^2.5.0"
   }
 }
