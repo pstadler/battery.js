@@ -41,7 +41,7 @@ Battery.onUpdate(logBatteryStatus);
 
 ## Demo
 
-[pstadler.sh/battery.js](http://pstadler.sh/battery.js)
+[pstadler.dev/battery.js](http://pstadler.dev/battery.js)
 
 [npm-url]: https://npmjs.com/package/battery.js
 [npm-version-image]: https://img.shields.io/npm/v/battery.js.svg?style=flat-square
